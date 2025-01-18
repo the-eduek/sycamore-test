@@ -26,7 +26,7 @@ function redirectEditCustomer(id) {
             <th class="px-4 py-2 text-left">Phone</th>
             <th class="px-4 py-2 text-left">State</th>
             <th class="px-4 py-2">Status</th>
-            <th></th>
+            <th class="w-0"></th>
           </tr>
         </thead>
 
@@ -34,14 +34,14 @@ function redirectEditCustomer(id) {
           <tr
             v-for="(customer, index) in customers"
             :key="customer.id"
-            :class="['border-b', {'bg-white': index % 2 === 0, 'bg-purple-50': index % 2 !== 0}]"
+            :class="['border-b', { 'bg-white': index % 2 === 0, 'bg-purple-50': index % 2 !== 0 }]"
           >
-            <td class="px-4 py-2 text-sm text-gray-700">{{ customer.firstName }}</td>
-            <td class="px-4 py-2 text-sm text-gray-700">{{ customer.lastName }}</td>
-            <td class="px-4 py-2 text-sm text-gray-700">{{ customer.email }}</td>
-            <td class="px-4 py-2 text-sm text-gray-700">{{ customer.phone }}</td>
-            <td class="px-4 py-2 text-sm text-gray-700">{{ customer.state }}</td>
-            <td class="px-4 py-2 text-center text-sm">
+            <td class="px-4 py-3 text-sm text-gray-700">{{ customer.firstName }}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">{{ customer.lastName }}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">{{ customer.email }}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">{{ customer.phone }}</td>
+            <td class="px-4 py-3 text-sm text-gray-700">{{ customer.state }}</td>
+            <td class="px-4 py-3 text-center text-sm">
               <span
                 class="px-2 py-1 text-xs font-medium rounded"
                 :class="{
@@ -52,7 +52,7 @@ function redirectEditCustomer(id) {
                 {{ customer.active ? 'Active' : 'Inactive' }}
               </span>
             </td>
-            <td class="p-2 text-center text-sm">
+            <td class="flex p-4 text-center text-sm max-w-fit">
               <button
                 @click="redirectEditCustomer(customer.id)"
                 class="text-blue-500 hover:text-blue-700 mr-2"
