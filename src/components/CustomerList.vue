@@ -36,8 +36,8 @@ function redirectEditCustomer(id) {
             :key="customer.id"
             :class="['border-b', { 'bg-white': index % 2 === 0, 'bg-purple-50': index % 2 !== 0 }]"
           >
-            <td class="px-4 py-3 text-sm text-gray-700">{{ customer.firstName }}</td>
-            <td class="px-4 py-3 text-sm text-gray-700">{{ customer.lastName }}</td>
+            <td class="capitalize px-4 py-3 text-sm text-gray-700">{{ customer.firstName }}</td>
+            <td class="capitalize px-4 py-3 text-sm text-gray-700">{{ customer.lastName }}</td>
             <td class="px-4 py-3 text-sm text-gray-700">{{ customer.email }}</td>
             <td class="px-4 py-3 text-sm text-gray-700">{{ customer.phone }}</td>
             <td class="px-4 py-3 text-sm text-gray-700">{{ customer.state }}</td>

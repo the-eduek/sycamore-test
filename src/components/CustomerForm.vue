@@ -2,28 +2,24 @@
 import { onBeforeMount, ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useCustomerStore } from '@/stores/customer'
+import { CUSTOMER } from '@/constants'
 import states from '@/assets/states.json'
+import vValidateFormInput from '@/functions/validateFormInput'
 
-const CUSTOMER = {
-  FIRSTNAME: 'First Name',
-  LASTNAME: 'Last Name',
-  EMAIL: 'Email',
-  PHONE: 'Phone',
-  STATE: 'State',
-  ACTIVE: 'Active Customer',
-  DETAILS: 'Details',
-}
-
+// store
 const { customers } = storeToRefs(useCustomerStore())
-
 const { addCustomer } = useCustomerStore()
 
+// props
 const props = defineProps({
   editID: {
     type: Number,
     default: null,
   },
 })
+
+// emit submit event
+const emits = defineEmits(['submit'])
 
 const customerObj = ref({
   id: '',
@@ -36,149 +32,161 @@ const customerObj = ref({
   details: '',
 })
 
-function handleSubmit() {
-  if (props.editID) {
-    const customerIndex = customers.value.findIndex((customer) => customer.id === props.editID)
-    customers.value[customerIndex] = { ...customerObj.value }
+// submit form handler
+function validateForm() {
+  const inputFields = document.querySelectorAll('[data-validate]')
+  let allValid = true
 
-    emitSubmit()
-    return
-  }
+  inputFields.forEach((inputField) => {
+    console.log(inputField)
 
-  const noOfCustomers = customers.value.length
-  customerObj.value.id = noOfCustomers + 1
+    if (!inputField._isValid) {
+      allValid = false
+      inputField._showErrorMessage()
+    }
+  })
 
-  addCustomer(customerObj.value)
-  emitSubmit()
+  return allValid
 }
 
+function handleSubmit() {
+  if (!validateForm()) return
+
+  if (props.editID) {
+    const customerIndex = customers.value.findIndex((customer) => customer.id === props.editID)
+    if (customerIndex !== -1) customers.value[customerIndex] = { ...customerObj.value }
+  } else {
+    const noOfCustomers = customers.value.length
+    customerObj.value.id = noOfCustomers + 1
+    addCustomer(customerObj.value)
+  }
+
+  emits('submit')
+}
+
+// load existing data for edit
 onBeforeMount(() => {
   const customer = customers.value.find((customer) => customer.id === props.editID)
   if (customer) {
     customerObj.value = { ...customer }
   }
 })
-
-// emit submit event
-const emits = defineEmits(['submit'])
-
-function emitSubmit() {
-  emits('submit')
-}
 </script>
 
 <template>
   <div class="py-4">
     <form @submit.prevent="handleSubmit">
-      <div class="md:flex space-y-6 md:space-y-0 mb-6">
-        <div class="md:w-1/2 md:mr-4">
-          <label :for="CUSTOMER.FIRSTNAME" class="block text-sm font-medium">{{
-            CUSTOMER.FIRSTNAME
-          }}</label>
+      <div class="md:flex space-y-8 md:space-y-0 mb-8 md:mb-12">
+        <div class="md:w-1/2 md:mr-4 relative">
+          <label :for="CUSTOMER.FIRSTNAME" class="block text-sm font-medium">First Name</label>
 
           <input
             :id="CUSTOMER.FIRSTNAME"
             placeholder="Enter customer first name"
-            :class="[{ 'border-red-500': error }, 'w-full mt-1 px-3 py-2 border rounded text-sm']"
+            class="w-full mt-1 px-3 py-2 border rounded text-sm"
             type="text"
             v-model="customerObj.firstName"
+            v-validate-form-input="CUSTOMER.FIRSTNAME"
+            data-validate="true"
           />
         </div>
 
         <div class="md:w-1/2 md:ml-4">
-          <label :for="CUSTOMER.LASTNAME" class="block text-sm font-medium">{{
-            CUSTOMER.LASTNAME
-          }}</label>
+          <label :for="CUSTOMER.LASTNAME" class="block text-sm font-medium">Last Name</label>
 
           <input
             :id="CUSTOMER.LASTNAME"
             placeholder="Enter customer last name"
-            :class="[{ 'border-red-500': error }, 'w-full mt-1 px-3 py-2 border rounded text-sm']"
+            class="w-full mt-1 px-3 py-2 border rounded text-sm"
             type="text"
             v-model="customerObj.lastName"
+            v-validate-form-input="CUSTOMER.LASTNAME"
+            data-validate="true"
           />
         </div>
       </div>
 
-      <div class="md:flex space-y-6 md:space-y-0 mb-6">
+      <div class="md:flex space-y-8 md:space-y-0 mb-8 md:mb-12">
         <div class="md:w-1/2 md:mr-4">
-          <label :for="CUSTOMER.EMAIL" class="block text-sm font-medium">{{
-            CUSTOMER.EMAIL
-          }}</label>
+          <label :for="CUSTOMER.EMAIL" class="block text-sm font-medium">Email</label>
 
           <input
             :id="CUSTOMER.EMAIL"
             placeholder="Enter customer email"
-            :class="[{ 'border-red-500': error }, 'w-full mt-1 px-3 py-2 border rounded text-sm']"
+            class="w-full mt-1 px-3 py-2 border rounded text-sm"
             type="text"
             v-model="customerObj.email"
+            v-validate-form-input="CUSTOMER.EMAIL"
+            data-validate="true"
           />
         </div>
 
         <div class="md:w-1/2 md:ml-4">
-          <label :for="CUSTOMER.PHONE" class="block text-sm font-medium">{{
-            CUSTOMER.PHONE
-          }}</label>
+          <label :for="CUSTOMER.PHONE" class="block text-sm font-medium">Phone Number</label>
 
           <input
             :id="CUSTOMER.PHONE"
-            placeholder="Enter customer phone"
-            :class="[{ 'border-red-500': error }, 'w-full mt-1 px-3 py-2 border rounded text-sm']"
+            placeholder="Enter customer phone number"
+            class="w-full mt-1 px-3 py-2 border rounded text-sm"
             type="text"
             v-model="customerObj.phone"
+            v-validate-form-input="CUSTOMER.PHONE"
+            data-validate="true"
           />
         </div>
       </div>
 
-      <div class="md:flex md:items-center space-y-6 md:space-y-0 mb-6">
+      <div class="md:flex">
+        <div class="md:w-1/2 md:ml-4 md:order-2">
+          <div>
+            <label :for="CUSTOMER.STATE" class="block text-sm font-medium">State (Nigeria)</label>
+
+            <select
+              :name="CUSTOMER.STATE"
+              :id="CUSTOMER.STATE"
+              class="background-none bg-white h-full w-full mt-1 px-3 py-2.5 border rounded text-sm"
+              v-model="customerObj.state"
+              v-validate-form-input="CUSTOMER.STATE"
+              data-validate="true"
+            >
+              <option value="" disabled>Select customer state</option>
+              <option v-for="(state, index) in [...states]" :key="index" :value="state">
+                {{ state }}
+              </option>
+            </select>
+          </div>
+
+          <div class="flex items-center mb-8 mt-10">
+            <input
+              type="checkbox"
+              :id="CUSTOMER.STATUS"
+              v-model="customerObj.active"
+              class="mr-1.5"
+            />
+            <label :for="CUSTOMER.STATUS" class="text-sm font-medium">Set as active customer</label>
+          </div>
+        </div>
+
         <div class="md:w-1/2 md:mr-4">
-          <label :for="CUSTOMER.STATE" class="block text-sm font-medium">{{
-            CUSTOMER.STATE
-          }}</label>
-
-          <select
-            :name="CUSTOMER.STATE"
-            :id="CUSTOMER.STATE"
-            :class="[
-              { 'border-red-500': error },
-              'background-none h-full w-full mt-1 px-3 py-2.5 border rounded text-sm',
-            ]"
-            v-model="customerObj.state"
+          <label :for="CUSTOMER.DETAILS" class="block text-sm font-medium"
+            >Customer's Details</label
           >
-            <option v-for="(state, index) in [...states]" :key="index" :value="state">
-              {{ state }}
-            </option>
-          </select>
+
+          <textarea
+            :id="CUSTOMER.DETAILS"
+            v-model="customerObj.details"
+            v-validate-form-input="CUSTOMER.DETAILS"
+            class="w-full mt-1 px-3 py-2 border rounded h-32 text-sm"
+            placeholder="Enter customer details"
+            data-validate="true"
+          ></textarea>
         </div>
-
-        <div class="flex items-center md:ml-4 w-1/2">
-          <input
-            type="checkbox"
-            :id="CUSTOMER.ACTIVE"
-            v-model="customerObj.active"
-            class="mr-1.5"
-          />
-          <label :for="CUSTOMER.ACTIVE" class="text-sm font-medium">Active customer</label>
-        </div>
-      </div>
-
-      <div>
-        <label :for="CUSTOMER.DETAILS" class="block text-sm font-medium">{{
-          CUSTOMER.DETAILS
-        }}</label>
-
-        <textarea
-          :id="CUSTOMER.DETAILS"
-          v-model="customerObj.details"
-          class="w-full mt-1 px-3 py-2 border rounded h-32 text-sm"
-          placeholder="Enter customer details"
-        ></textarea>
       </div>
 
       <div class="flex justify-center my-8 md:my-16">
         <button
           type="submit"
-          class="bg-purple-500 font-medium text-white px-4 py-3 rounded hover:bg-purple-600 w-full md:w-3/4"
+          class="bg-purple-500 font-medium text-white px-4 py-3 rounded hover:bg-purple-600 w-full md:w-1/2"
         >
           {{ props.editID ? 'Save edits' : 'Add customer' }}
         </button>

@@ -29,7 +29,7 @@ watch(
 </script>
 
 <template>
-  <div class="max-w-7xl min-h-screen mx-auto px-4 py-10">
+  <div class="max-w-5xl min-h-screen mx-auto px-4 py-10">
     <div class="flex items-center">
       <button @click="goBack" title="Back">
         <svg

@@ -4,7 +4,7 @@ import { RouterLink } from 'vue-router'
 </script>
 
 <template>
-  <div class="max-w-7xl min-h-screen mx-auto px-4 py-10">
+  <div class="max-w-5xl min-h-screen mx-auto px-4 py-10">
     <div class="md:flex md:items-center md:justify-between">
       <h1 class="text-xl font-bold mb-4 md:mb-0">Sycamore Customer Dashboard</h1>
 
