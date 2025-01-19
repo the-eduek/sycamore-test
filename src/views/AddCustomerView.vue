@@ -29,7 +29,7 @@ watch(
 </script>
 
 <template>
-  <div class="max-w-5xl min-h-screen mx-auto px-4 py-10">
+  <div class="max-w-5xl min-h-screen mx-auto px-4 sm:px-6 py-10">
     <div class="flex items-center">
       <button @click="goBack" title="Back">
         <svg
@@ -49,7 +49,7 @@ watch(
       </button>
     </div>
 
-    <h1 class="text-xl font-bold my-4 md:my-8">{{ editID ? 'Edit' : 'Add' }} Customer</h1>
+    <h1 class="text-xl font-bold my-8">{{ editID ? 'Edit' : 'Add' }} Customer</h1>
 
     <CustomerForm :editID="editID" @submit="closeForm" />
   </div>

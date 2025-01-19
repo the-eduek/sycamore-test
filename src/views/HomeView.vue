@@ -1,12 +1,13 @@
 <script setup>
-import CustomerList from '@/components/CustomerList.vue'
 import { RouterLink } from 'vue-router'
+import CustomerList from '@/components/CustomerList.vue'
+import SearchInput from '@/components/SearchInput.vue'
 </script>
 
 <template>
-  <div class="max-w-5xl min-h-screen mx-auto px-4 py-10">
-    <div class="md:flex md:items-center md:justify-between">
-      <h1 class="text-xl font-bold mb-4 md:mb-0">Sycamore Customer Dashboard</h1>
+  <div class="max-w-5xl min-h-screen mx-auto px-4 sm:px-6 py-10">
+    <div class="sm:flex sm:items-center sm:justify-between">
+      <h1 class="text-xl font-bold mb-4 sm:mb-0">Sycamore Customer Dashboard</h1>
 
       <RouterLink
         to="/add-customer"
@@ -28,6 +29,8 @@ import { RouterLink } from 'vue-router'
         </svg>
       </RouterLink>
     </div>
+
+    <SearchInput />
 
     <CustomerList />
   </div>

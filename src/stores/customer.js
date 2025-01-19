@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useCustomerStore = defineStore('customer', () => {
@@ -8,7 +8,7 @@ export const useCustomerStore = defineStore('customer', () => {
       firstName: 'John',
       lastName: 'Doe',
       email: 'john.doe@example.com',
-      phone: '1234567890',
+      phone: '08012233344',
       state: 'Lagos',
       active: true,
     },
@@ -17,7 +17,7 @@ export const useCustomerStore = defineStore('customer', () => {
       firstName: 'Jane',
       lastName: 'Smith',
       email: 'jane.smith@example.com',
-      phone: '0987654321',
+      phone: '07044445555',
       state: 'Abia',
       active: false,
     },
@@ -26,7 +26,7 @@ export const useCustomerStore = defineStore('customer', () => {
       firstName: 'Rloo',
       lastName: 'Tooph',
       email: 'rloo.tooph@example.com',
-      phone: '0987654321',
+      phone: '08077777778',
       state: 'Delta',
       active: false,
     },
@@ -35,22 +35,11 @@ export const useCustomerStore = defineStore('customer', () => {
       firstName: 'Ed',
       lastName: 'Schitt',
       email: 'ed.schitt@example.com',
-      phone: '0987654321',
+      phone: '09099999999',
       state: 'Taraba',
       active: true,
     },
-    {
-      id: 4,
-      firstName: 'Reed',
-      lastName: 'OiPoi',
-      email: 'reed.Ooipoi@example.com',
-      phone: '0987654321',
-      state: 'Ogun',
-      active: false,
-    },
   ])
-
-  const customerPlaceholder = ref({})
 
   function addCustomer(newCustomer) {
     customers.value.push(newCustomer)
@@ -60,9 +49,26 @@ export const useCustomerStore = defineStore('customer', () => {
     customers.value = customers.value.filter((customer) => customerID !== customer.id)
   }
 
-  function editCustomer(customerID) {
-    customerPlaceholder.value = customers.value.filter((customer) => customerID === customer.id)[0]
-  }
+  const searchTerm = ref('')
 
-  return { customers, addCustomer, deleteCustomer, editCustomer }
+  const filteredCustomers = computed(() =>
+    customers.value.filter((customer) => {
+      searchTerm.value = searchTerm.value.trim().toLowerCase()
+
+      let customerStatus = ''
+      if (customer.active) customerStatus = 'active'
+      else customerStatus = 'inactive'
+
+      return (
+        customer.firstName.toLowerCase().includes(searchTerm.value) ||
+        customer.lastName.toLowerCase().includes(searchTerm.value) ||
+        customer.email.toLowerCase().includes(searchTerm.value) ||
+        customer.phone.toLowerCase().includes(searchTerm.value) ||
+        customer.state.toLowerCase().includes(searchTerm.value) ||
+        customerStatus.startsWith(searchTerm.value)
+      )
+    }),
+  )
+
+  return { customers, addCustomer, deleteCustomer, searchTerm, filteredCustomers }
 })

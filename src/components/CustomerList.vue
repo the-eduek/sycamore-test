@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useCustomerStore } from '@/stores/customer'
 
-const { customers } = storeToRefs(useCustomerStore())
+const { customers, filteredCustomers } = storeToRefs(useCustomerStore())
 
 const { deleteCustomer } = useCustomerStore()
 
@@ -32,7 +32,7 @@ function redirectEditCustomer(id) {
 
         <tbody>
           <tr
-            v-for="(customer, index) in customers"
+            v-for="(customer, index) in filteredCustomers"
             :key="customer.id"
             :class="['border-b', { 'bg-white': index % 2 === 0, 'bg-purple-50': index % 2 !== 0 }]"
           >
@@ -96,9 +96,15 @@ function redirectEditCustomer(id) {
             </td>
           </tr>
 
-          <tr v-if="!customers.length">
+          <tr v-if="!customers.length && !filteredCustomers.length">
             <td colspan="7" class="px-4 py-6 text-center text-gray-500 text-sm">
               No customers yet
+            </td>
+          </tr>
+
+          <tr v-if="customers.length && !filteredCustomers.length">
+            <td colspan="7" class="px-4 py-6 text-center text-gray-500 text-sm">
+              No search results
             </td>
           </tr>
         </tbody>

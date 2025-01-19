@@ -38,8 +38,6 @@ function validateForm() {
   let allValid = true
 
   inputFields.forEach((inputField) => {
-    console.log(inputField)
-
     if (!inputField._isValid) {
       allValid = false
       inputField._showErrorMessage()
@@ -56,8 +54,7 @@ function handleSubmit() {
     const customerIndex = customers.value.findIndex((customer) => customer.id === props.editID)
     if (customerIndex !== -1) customers.value[customerIndex] = { ...customerObj.value }
   } else {
-    const noOfCustomers = customers.value.length
-    customerObj.value.id = noOfCustomers + 1
+    customerObj.value.id = customers.value.length + 1
     addCustomer(customerObj.value)
   }
 
