@@ -9,7 +9,7 @@ const { searchTerm } = storeToRefs(useCustomerStore())
   <div class="md:w-1/2 lg:w-1/3 my-10">
     <div class="relative">
       <input
-      id="search"
+        id="search"
         placeholder="Search all customers"
         class="border h-full pl-3 pr-12 py-2 rounded text-sm w-full"
         title="Search"
@@ -17,7 +17,10 @@ const { searchTerm } = storeToRefs(useCustomerStore())
         v-model="searchTerm"
       />
 
-      <label class="absolute bg-white border inline-flex h-full items-center right-0 px-2 rounded-r top-0" for="search">
+      <label
+        class="absolute border-l inline-flex h-full items-center right-0 px-2 rounded-r top-0"
+        for="search"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
