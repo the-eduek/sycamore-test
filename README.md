@@ -13,4 +13,4 @@ For the Sycamore frontend assessment, I have created a customer dashboard using 
 
 ## deployment
 
-Live Demo - [sycamore-test.netlify.app](https://sycamore-test.netlify.app)
+Live Demo - [eduek-sycamore-test.netlify.app](https://eduek-sycamore-test.netlify.app)
