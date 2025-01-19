@@ -1,7 +1,9 @@
 <script setup>
+import { ref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
 import { useCustomerStore } from '@/stores/customer'
+import ConfirmModal from '@/components/ConfirmModal.vue'
 
 const { customers, filteredCustomers } = storeToRefs(useCustomerStore())
 
@@ -11,6 +13,15 @@ const router = useRouter()
 
 function redirectEditCustomer(id) {
   router.push({ path: '/add-customer', query: { edit: id } })
+}
+
+const selectedCustomerID = ref('')
+
+const showModal = ref(false)
+
+function toggleModal(customerID) {
+  showModal.value = !showModal.value
+  if (customerID) return customerID
 }
 </script>
 
@@ -74,7 +85,12 @@ function redirectEditCustomer(id) {
                 </svg>
               </button>
               <button
-                @click="deleteCustomer(customer.id)"
+                @click="
+                  () => {
+                    selectedCustomerID = customer.id
+                    toggleModal()
+                  }
+                "
                 class="text-red-500 hover:text-red-700 ml-2"
                 title="Delete customer"
               >
@@ -109,6 +125,18 @@ function redirectEditCustomer(id) {
           </tr>
         </tbody>
       </table>
+
+      <ConfirmModal
+        v-if="showModal"
+        @close="toggleModal"
+        @delete="
+          () => {
+            deleteCustomer(selectedCustomerID)
+            selectedCustomerID = null
+            toggleModal()
+          }
+        "
+      />
     </div>
   </div>
 </template>
