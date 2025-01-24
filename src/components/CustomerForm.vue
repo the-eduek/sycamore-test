@@ -80,7 +80,7 @@ onBeforeMount(() => {
           <input
             :id="CUSTOMER.FIRSTNAME"
             placeholder="Enter customer first name"
-            class="w-full mt-1 px-3 py-2 border rounded text-sm"
+            class="w-full mt-1 px-3 py-2 border hover:border-neutral-400 rounded text-sm outline-none focus:ring-2 focus:ring-purple-300"
             type="text"
             v-model="customerObj.firstName"
             v-validate-form-input="CUSTOMER.FIRSTNAME"
@@ -94,7 +94,7 @@ onBeforeMount(() => {
           <input
             :id="CUSTOMER.LASTNAME"
             placeholder="Enter customer last name"
-            class="w-full mt-1 px-3 py-2 border rounded text-sm"
+            class="w-full mt-1 px-3 py-2 border hover:border-neutral-400 rounded text-sm outline-none focus:ring-2 focus:ring-purple-300"
             type="text"
             v-model="customerObj.lastName"
             v-validate-form-input="CUSTOMER.LASTNAME"
@@ -110,7 +110,7 @@ onBeforeMount(() => {
           <input
             :id="CUSTOMER.EMAIL"
             placeholder="Enter customer email"
-            class="w-full mt-1 px-3 py-2 border rounded text-sm"
+            class="w-full mt-1 px-3 py-2 border hover:border-neutral-400 rounded text-sm outline-none focus:ring-2 focus:ring-purple-300"
             type="text"
             v-model="customerObj.email"
             v-validate-form-input="CUSTOMER.EMAIL"
@@ -124,7 +124,7 @@ onBeforeMount(() => {
           <input
             :id="CUSTOMER.PHONE"
             placeholder="Enter customer phone number"
-            class="w-full mt-1 px-3 py-2 border rounded text-sm"
+            class="w-full mt-1 px-3 py-2 border hover:border-neutral-400 rounded text-sm outline-none focus:ring-2 focus:ring-purple-300"
             type="text"
             v-model="customerObj.phone"
             v-validate-form-input="CUSTOMER.PHONE"
@@ -138,19 +138,24 @@ onBeforeMount(() => {
           <div>
             <label :for="CUSTOMER.STATE" class="block text-sm font-medium">State (Nigeria)</label>
 
-            <select
-              :name="CUSTOMER.STATE"
-              :id="CUSTOMER.STATE"
-              class="background-none bg-white h-full w-full mt-1 px-3 py-2.5 border rounded text-sm"
-              v-model="customerObj.state"
-              v-validate-form-input="CUSTOMER.STATE"
-              data-validate="true"
-            >
-              <option value="" disabled>Select customer state</option>
-              <option v-for="(state, index) in [...states]" :key="index" :value="state">
-                {{ state }}
-              </option>
-            </select>
+            <div class="mt-1 relative w-full">
+              <select
+                :name="CUSTOMER.STATE"
+                :id="CUSTOMER.STATE"
+                :class="[
+                  'appearance-none bg-white px-3 py-2 border hover:border-neutral-400 rounded text-sm focus:outline-none focus:ring-2 focus:ring-purple-300 w-full',
+                  { 'text-gray-400': !customerObj.state },
+                ]"
+                v-model="customerObj.state"
+                v-validate-form-input="CUSTOMER.STATE"
+                data-validate="true"
+              >
+                <option value="" disabled>Select customer state</option>
+                <option v-for="(state, index) in [...states]" :key="index" :value="state">
+                  {{ state }}
+                </option>
+              </select>
+            </div>
           </div>
 
           <div class="flex items-center mb-8 mt-10">
@@ -173,7 +178,7 @@ onBeforeMount(() => {
             :id="CUSTOMER.DETAILS"
             v-model="customerObj.details"
             v-validate-form-input="CUSTOMER.DETAILS"
-            class="w-full mt-1 px-3 py-2 border rounded h-32 text-sm"
+            class="w-full mt-1 px-3 py-2 border rounded h-32 text-sm outline-none focus:ring-2 focus:ring-purple-300"
             placeholder="Enter customer details"
             data-validate="true"
           ></textarea>
